@@ -30,11 +30,30 @@ namespace SocketsServerStarter
 
             int numberOfReceivedBytes = 0;
 
-            numberOfReceivedBytes = client.Receive(buff);
+            while (true)
+            {
 
-            Console.WriteLine("Number of received byte: " + numberOfReceivedBytes);
+                numberOfReceivedBytes = client.Receive(buff);
 
-            Console.WriteLine("Data sent by client is: " + buff);
+                Console.WriteLine("Number of received byte: " + numberOfReceivedBytes);
+
+                Console.WriteLine("Data sent by client is: " + buff);
+
+                string receivedText = Encoding.ASCII.GetString(buff, 0, numberOfReceivedBytes);
+
+                Console.WriteLine("Data sent by client is: " + receivedText);
+
+                client.Send(buff);
+
+                if(receivedText == "x")
+                {
+                    break;
+                }
+
+                Array.Clear(buff, 0, buff.Length);
+                numberOfReceivedBytes = 0;
+
+            }
 
         }
     }
